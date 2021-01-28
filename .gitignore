@@ -1,0 +1,10 @@
+/.gradle
+/.idea
+/out
+/build
+*.iml
+*.ipr
+*.iws
+local.properties
+postgis-data
+pg_data

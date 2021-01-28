@@ -1,0 +1,39 @@
+version: '3'
+services:
+  db:
+    image: library/postgres:13.1-alpine
+    container_name: main
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data/pg_data
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: test_user
+      POSTGRES_DB: main
+      PGDATA: /var/lib/postgresql/data/pg_data
+    restart: always
+  psql_postgis_db:
+    image: kartoza/postgis:latest
+    volumes:
+      - ./postgis-data:/var/lib/postgresql
+    environment:
+      # If you need to create multiple database you can add coma separated databases eg gis,data
+      - POSTGRES_DB=gis
+      - POSTGRES_USER=gis_admin    # Here it's important to keep the same name as the one configured inside ops_settings_docker.yml
+      - POSTGRES_PASS=admin        # Here it's important to keep the same name as the one configured inside ops_settings_docker.yml
+      - POSTGRES_DBNAME=gis        # Here it's important to keep the same name as the one configured inside ops_settings_docker.yml
+      - ALLOW_IP_RANGE=0.0.0.0/0
+    ports:
+      - 5434:5432
+    restart: on-failure
+  econav:
+    build: Dockerfile
+    container_name: application
+    ports:
+      - 8080:3000
+    environment:
+      DB_USER: test_user
+      DB_PASSWORD: 123
+      DB_URL: postgress://test_user:123@db:5432/docker
+    restart: always
