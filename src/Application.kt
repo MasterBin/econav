@@ -13,9 +13,14 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.websocket.*
 import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.StdOutSqlLogger
+import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.getKoin
 import org.slf4j.event.*
+import ru.nk.econav.database.DatabaseFactory
 import ru.nk.econav.di.appModule
 import ru.nk.econav.routes.location
 import ru.nk.econav.security.JwtFactory
@@ -72,10 +77,9 @@ fun Application.module(testing: Boolean = true) {
         location(getKoin().get())
     }
 
-//    DatabaseFactory.init()
-//    transaction {
-//        addLogger(StdOutSqlLogger)
-//        SchemaUtils.create(Users)
-//    }
+    DatabaseFactory.init()
+    transaction {
+        addLogger(StdOutSqlLogger)
+    }
 }
 

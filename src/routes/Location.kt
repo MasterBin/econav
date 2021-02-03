@@ -22,11 +22,9 @@ fun Route.location(routeService: RouteService) {
     }
 
     post<RouteRequest>("/route/") {
-//        withContext(Dispatchers.IO) {
         call.respond(
-            routeService.getRoute(it.start, it.end) ?: emptyList<String>()
+            routeService.getRoute(start = it.start, end = it.end)
         )
-//        }
     }
 }
 

@@ -8,3 +8,5 @@
 local.properties
 postgis-data
 pg_data
+postgis-data-backup
+postgis-data-backop-ways
