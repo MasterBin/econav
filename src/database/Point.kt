@@ -7,9 +7,12 @@ import org.postgis.PGgeometry
 import org.postgis.Point
 
 object Points : Table("planet_osm_point") {
+
     val osmId = long("osm_id")
     val access = text("access")
     val way = point("way", 3857)
+
+
     override val primaryKey = PrimaryKey(osmId)
 }
 
@@ -21,6 +24,7 @@ private class PointColumnType(private val srid: Int = 4326) : ColumnType() {
     override fun sqlType() = "GEOMETRY(Point, $srid)"
 
     override fun valueFromDB(value: Any): Any = if (value is PGgeometry) value.geometry else value
+
     override fun notNullValueToDB(value: Any): Any {
         if (value is Point) {
             if (value.srid == Point.UNKNOWN_SRID) value.srid = srid

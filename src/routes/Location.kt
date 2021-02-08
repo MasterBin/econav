@@ -23,7 +23,7 @@ fun Route.location(routeService: RouteService) {
 
     post<RouteRequest>("/route/") {
         call.respond(
-            routeService.getRoute(start = it.start, end = it.end)
+            RouteResponse(routeService.getRoute(start = it.start, end = it.end))
         )
     }
 }
@@ -32,4 +32,9 @@ fun Route.location(routeService: RouteService) {
 data class RouteRequest(
     val start : LatLon,
     val end : LatLon
+)
+
+@Serializable
+data class RouteResponse(
+    val encodedRoute : String
 )
