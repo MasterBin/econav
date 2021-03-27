@@ -5,12 +5,11 @@ import io.ktor.application.*
 import org.koin.dsl.module
 import ru.nk.econav.security.JwtFactory
 import ru.nk.econav.serivice.RouteService
+import ru.nk.econav.serivice.RoutingManager
 
-/**
- * Created by n.samoylov on 18.11.2020
- */
 
 fun appModule(application : Application) = module {
+
     single { application }
 
     single { JwtFactory("asdasdasd;lfaslkdjf;lasakjd") }
@@ -23,6 +22,8 @@ fun appModule(application : Application) = module {
                 )
             }.build()
     }
+
+    single(createdAtStart = true) { RoutingManager() }
 
     single {
         RouteService(get())

@@ -17,15 +17,12 @@ import ru.nk.econav.serivice.RouteService
 
 fun Route.location(routeService: RouteService) {
 
-    get("/") {
-        call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
-    }
-
     post<RouteRequest>("/route/") {
         call.respond(
             RouteResponse(routeService.getRoute(start = it.start, end = it.end))
         )
     }
+
 }
 
 @Serializable

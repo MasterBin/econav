@@ -1,6 +1,10 @@
 package ru.nk.econav
 
 import com.fasterxml.jackson.databind.*
+import com.google.maps.internal.PolylineEncoding
+import com.google.maps.model.LatLng
+import com.graphhopper.config.Profile
+import com.graphhopper.routing.util.EncodingManager
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
@@ -13,18 +17,20 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.websocket.*
 import kotlinx.serialization.json.Json
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.getKoin
 import org.slf4j.event.*
-import ru.nk.econav.database.DatabaseFactory
 import ru.nk.econav.di.appModule
 import ru.nk.econav.routes.location
 import ru.nk.econav.security.JwtFactory
 import java.time.*
+import java.util.Locale
+
+import com.graphhopper.GHRequest
+import com.graphhopper.GraphHopperConfig
+import com.graphhopper.util.Parameters
+import org.koin.core.time.measureDuration
+
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -77,9 +83,10 @@ fun Application.module(testing: Boolean = true) {
         location(getKoin().get())
     }
 
-    DatabaseFactory.init()
-    transaction {
-        addLogger(StdOutSqlLogger)
-    }
+//    DatabaseFactory.init()
+//    transaction {
+//        addLogger(StdOutSqlLogger)
+//    }
 }
+
 
