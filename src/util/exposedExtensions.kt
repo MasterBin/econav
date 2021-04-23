@@ -19,6 +19,27 @@ fun <T:Any> String.execAndMap(transform : (ResultSet) -> T) : List<T> {
     return result
 }
 
+fun String.execCreate() {
+    TransactionManager.current().execCTECreate(this)
+}
+
+fun Transaction.execCTECreate(stmt: String) {
+    if (stmt.isEmpty()) return
+
+    val type = StatementType.CREATE
+
+    exec(object : Statement<Unit>(type, emptyList()) {
+        override fun PreparedStatementApi.executeInternal(transaction: Transaction) {
+            executeUpdate()
+        }
+
+        override fun prepareSQL(transaction: Transaction): String = stmt
+
+        override fun arguments(): Iterable<Iterable<Pair<ColumnType, Any?>>> = emptyList()
+    })
+}
+
+
 fun <T:Any> Transaction.execCTE(stmt: String, transform: (ResultSet) -> T): T? {
     if (stmt.isEmpty()) return null
 

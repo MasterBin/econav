@@ -6,7 +6,7 @@
 *.ipr
 *.iws
 local.properties
-postgis-data
+postgis-data-latest-latest
 pg_data
 postgis-data-backup
 postgis-data-backop-ways

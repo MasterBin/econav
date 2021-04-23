@@ -26,7 +26,14 @@ services:
       - ALLOW_IP_RANGE=0.0.0.0/0
     ports:
       - 5434:5432
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=1000"
+      - "-c"
+      - "shared_buffers=4GB"
     restart: on-failure
+    mem_limit: 3000m
   econav:
     build: Dockerfile
     container_name: application

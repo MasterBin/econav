@@ -9,28 +9,5 @@ import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import java.io.File
 
-//val file = File("/Users/nk/Desktop/тест1.csv")
-//val out = File("/Users/nk/Desktop/тест2.csv")
+val file = File("/Users/nk/Desktop/1.txt")
 
-val reader = csvReader {
-    charset = "UTF-8"
-    delimiter = ';'
-    escapeChar = '\\'
-    skipEmptyLine = true
-}
-
-val csvWriter = csvWriter {
-}
-
-reader.open("/Users/nk/Desktop/тест2.csv") {
-    csvWriter.open(File("/Users/nk/Desktop/test_id.csv")) {
-        readAllAsSequence().forEachIndexed { index, it ->
-            this.writeRow(
-                if (index == 0)
-                    listOf("Question", "Answer")
-                else
-                    listOf(it[0], "a$index")
-            )
-        }
-    }
-}

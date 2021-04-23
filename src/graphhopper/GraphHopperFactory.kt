@@ -4,10 +4,13 @@ import com.graphhopper.GraphHopper
 import com.graphhopper.GraphHopperConfig
 import com.graphhopper.config.Profile
 import com.graphhopper.reader.osm.GraphHopperOSM
+import com.graphhopper.routing.util.CarFlagEncoder
 import com.graphhopper.routing.util.EncodingManager
+import com.graphhopper.routing.util.FootFlagEncoder
 import com.typesafe.config.ConfigFactory
 import io.ktor.config.*
 import io.ktor.util.*
+import ru.nk.econav.graphhopper.FootFlagEncoder2
 
 @OptIn(KtorExperimentalAPI::class)
 object GraphHopperFactory {
@@ -22,7 +25,7 @@ object GraphHopperFactory {
     private val dbPassword = appConfig.property("postgisDB.dbPassword").getString()
 
     fun create(): GraphHopper =
-        GraphHopperPostgis().forServer().apply {
+        MyGraphHopper().forServer().apply {
 
             init(GraphHopperConfig().apply {
                 putObject("db.host", host)
@@ -40,14 +43,13 @@ object GraphHopperFactory {
 
             profiles = listOf(
                 Profile("foot")
-                    .setVehicle("foot")
+                    .setVehicle("foot2")
                     .setWeighting("shortest")
                     .setTurnCosts(false)
             )
-
 //            dataReaderFile = "/Users/nk/Desktop/mo-spe-highways2.osm.pbf"
 //            graphHopperLocation = "./graphFolder"
-            encodingManager = EncodingManager.create("car,foot")
+            encodingManager = EncodingManager.create(FootFlagEncoder2())
 
             //        profiles = listOf(
 //            Profile("car")

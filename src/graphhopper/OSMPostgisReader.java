@@ -342,7 +342,9 @@ public class OSMPostgisReader extends PostgisReader {
 
         for (String tag : tagsToCopy) {
             Object val = road.getAttribute(tag);
-            if (val != null) {
+            if(val != null && tag.equals("priority")) {
+                way.setTag("priority2", Float.parseFloat(val.toString()));
+            } else {
                 way.setTag(tag, val);
             }
         }

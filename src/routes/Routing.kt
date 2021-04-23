@@ -11,25 +11,26 @@ import kotlinx.serialization.Serializable
 import ru.nk.econav.model.LatLon
 import ru.nk.econav.serivice.RouteService
 
-/**
- * Created by n.samoylov on 18.11.2020
- */
 
-fun Route.location(routeService: RouteService) {
 
-    post<RouteRequest>("/route/") {
+fun Route.routingEngine(routeService: RouteService) {
+
+    post<RouteRequest>("/route") {
+        check(it.ecoParam in 0f..1f)
+
         call.respond(
-            RouteResponse(routeService.getRoute(start = it.start, end = it.end))
+            RouteResponse(routeService.getRoute(start = it.start, end = it.end, ecoParam = it.ecoParam))
         )
     }
-
 }
 
 @Serializable
 data class RouteRequest(
     val start : LatLon,
-    val end : LatLon
+    val end : LatLon,
+    val ecoParam : Float = 1f
 )
+
 
 @Serializable
 data class RouteResponse(
