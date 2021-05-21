@@ -1,18 +1,5 @@
 version: '3'
 services:
-  db:
-    image: library/postgres:13.1-alpine
-    container_name: main
-    ports:
-      - 5432:5432
-    volumes:
-      - ./pg_data:/var/lib/postgresql/data/pg_data
-    environment:
-      POSTGRES_PASSWORD: 123
-      POSTGRES_USER: test_user
-      POSTGRES_DB: main
-      PGDATA: /var/lib/postgresql/data/pg_data
-    restart: always
   psql_postgis_db:
     image: kartoza/postgis:latest
     volumes:
@@ -34,13 +21,16 @@ services:
       - "shared_buffers=4GB"
     restart: on-failure
     mem_limit: 3000m
+
   econav:
     build: Dockerfile
     container_name: application
     ports:
       - 8080:3000
     environment:
-      DB_USER: test_user
-      DB_PASSWORD: 123
+      DB_USER: gis_admin
+      DB_PASSWORD: admin
       DB_URL: postgress://test_user:123@db:5432/docker
+      MAPBOX_TOKEN: #write your token
     restart: always
+

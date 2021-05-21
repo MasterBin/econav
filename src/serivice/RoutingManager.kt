@@ -1,13 +1,11 @@
 package ru.nk.econav.serivice
 
-import com.google.maps.internal.PolylineEncoding
-import com.google.maps.model.LatLng
 import com.graphhopper.GHRequest
 import com.graphhopper.GraphHopper
+import com.graphhopper.ResponsePath
 import com.graphhopper.util.Parameters
 import graphhopper.GraphHopperFactory
 import graphhopper.MyGraphHopper
-import org.jetbrains.exposed.sql.transactions.transaction
 import ru.nk.econav.model.LatLon
 import ru.nk.econav.repository.EcoPlacesRepository
 import util.Upshot
@@ -19,14 +17,14 @@ class RoutingManager(
     private val ecoPlacesRepository: EcoPlacesRepository
 ) {
 
-    private var graphHopper : GraphHopper
+    var graphHopper : GraphHopper
 
     init {
         processEcoPlaces()
         graphHopper = GraphHopperFactory.create()
     }
 
-    suspend fun routeByPoints(from : LatLon, to : LatLon, ecoParam : Double) : Upshot<String, Unit> {
+    suspend fun routeByPoints(from : LatLon, to : LatLon, ecoParam : Double) : Upshot<ResponsePath, List<Throwable>> {
         require(ecoParam in 0.0..1.0)
 
         val req = GHRequest(
@@ -38,19 +36,15 @@ class RoutingManager(
             .putHint(Parameters.CH.DISABLE, true)
             .putHint(MyGraphHopper.ecoParam, ecoParam)
             .setProfile("foot")
-            .setAlgorithm("dijkstra")
+            .setAlgorithm(Parameters.Algorithms.ASTAR) //TODO: check other algorithm
 
         val rsp = graphHopper.route(req)
-        return if (!rsp.hasErrors()) {
-            val path = rsp.best
-            println("points : ${path.points}")
-            println("distance : ${path.distance}")
-            println("time : ${path.time}")
 
-            PolylineEncoding.encode(path.points.map { LatLng(it.lat, it.lon) }).also { println(it) }.asOk()
+        return if (!rsp.hasErrors()) {
+            rsp.best.instructions.first()?.extraInfoJSON?.keys?.also { println(it) }
+            (rsp.all.minByOrNull { it.time; } ?: error("")).asOk()
         } else {
-            println(rsp.errors)
-            Unit.asError()
+            rsp.errors.asError()
         }
     }
 

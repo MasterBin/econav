@@ -1,12 +1,15 @@
 package ru.nk.econav.di
 
 import com.google.maps.GeoApiContext
+import com.typesafe.config.ConfigFactory
 import io.ktor.application.*
+import io.ktor.config.*
 import org.koin.dsl.module
 import ru.nk.econav.repository.EcoPlacesRepository
+import ru.nk.econav.repository.GeocodingRepository
 import ru.nk.econav.repository.impl.EcoPlacesRepositoryImpl
-import ru.nk.econav.security.JwtFactory
-import ru.nk.econav.serivice.EcoPlacesService
+import ru.nk.econav.repository.impl.GeocodingRepositoryImpl
+import ru.nk.econav.serivice.GeocodingService
 import ru.nk.econav.serivice.RouteService
 import ru.nk.econav.serivice.RoutingManager
 
@@ -14,8 +17,6 @@ import ru.nk.econav.serivice.RoutingManager
 fun appModule(application : Application) = module {
 
     single { application }
-
-    single { JwtFactory("asdasdasd;lfaslkdjf;lasakjd") }
 
     single {
         GeoApiContext.Builder()
@@ -32,11 +33,17 @@ fun appModule(application : Application) = module {
         RouteService(get())
     }
 
-    single {
-        EcoPlacesService(get())
-    }
-
     single<EcoPlacesRepository> {
         EcoPlacesRepositoryImpl()
+    }
+
+    single {
+        GeocodingService(get())
+    }
+
+    single<GeocodingRepository> {
+        val conf = HoconApplicationConfig(ConfigFactory.load())
+
+        GeocodingRepositoryImpl(conf.property("mapbox.accessToken").getString())
     }
 }

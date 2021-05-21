@@ -38,7 +38,7 @@ object GraphHopperFactory {
 
                 putObject("datareader.file", "ways")
                 putObject("graph.location", "./graphFolder")
-                putObject("graph.flag_encoders", "car,foot")
+                putObject("graph.flag_encoders", "foot")
             })
 
             profiles = listOf(

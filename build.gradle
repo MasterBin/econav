@@ -75,6 +75,8 @@ dependencies {
     implementation "org.geotools.jdbc:gt-jdbc-postgis:19.4"
 
     implementation "com.google.maps:google-maps-services:$google_maps_version"
+
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-services:5.8.0'
 }
 
 kotlin.experimental.coroutines = 'enable'

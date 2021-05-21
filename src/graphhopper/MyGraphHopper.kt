@@ -5,9 +5,7 @@ import com.graphhopper.routing.DefaultWeightingFactory
 import com.graphhopper.routing.WeightingFactory
 import com.graphhopper.routing.util.EncodingManager
 import com.graphhopper.routing.util.PriorityCode
-import com.graphhopper.routing.weighting.FastestWeighting
-import com.graphhopper.routing.weighting.TurnCostProvider
-import com.graphhopper.routing.weighting.Weighting
+import com.graphhopper.routing.weighting.*
 import com.graphhopper.util.EdgeIteratorState
 import com.graphhopper.util.PMap
 import kotlin.math.pow
@@ -36,10 +34,6 @@ class MyGraphHopper : GraphHopperPostgis() {
                         return minFactor * super.getMinWeight(distance);
                     }
 
-                    /**
-                     * In most cases subclasses should only override this method to change the edge-weight. The turn cost handling
-                     * should normally be changed by passing another [TurnCostProvider] implementation to the constructor instead.
-                     */
                     override fun calcEdgeWeight(edgeState: EdgeIteratorState, reverse: Boolean): Double {
                         val weight = super.calcEdgeWeight(edgeState, reverse)
 
@@ -52,26 +46,13 @@ class MyGraphHopper : GraphHopperPostgis() {
                         val eco = requestHints.getDouble(ecoParam, 1.0)
 
                         if (ecoPriority == 404.0)
-                            return weight / ((50/25 * eco) + priority + 0.5)//weight / (0.5 + priority)
+                            return weight / ((50/25 * eco) + priority + 0.5)
 
                         if (ecoPriority < 0.0 || ecoPriority > 100.0)
                             error("MyGraphhopper: unsupported edge eco-priority value")
 
-//                        when(priority) {
-//                            0.0 -> {}
-//                            0.0 -> {}
-//                            0.0 -> {}
-//                            0.0 -> {}
-//
-//                        }
 
-
-                        return when (eco) {
-//                            0.0 -> weight / (0.5 + priority)
-//                            else -> weight / (0.2 + 1/priority + ((ecoPriority) * eco / 10))
-//                            else -> weight * (1/(priority + 0.5)) * (1/(ecoPriority/10 * eco + 0.2))
-                            else -> weight / ((ecoPriority/25 * eco) + priority + 0.5)
-                        }
+                        return weight / ((ecoPriority/25 * eco) + priority + 0.5)
                     }
 
                     override fun getName(): String = "shortest"
