@@ -1,16 +1,12 @@
-package ru.nk.econav.serivice
+package ru.nk.econav.service
 
 import com.google.maps.internal.PolylineEncoding
 import com.google.maps.model.LatLng
 import com.graphhopper.util.Instruction
-import ru.nk.econav.model.LatLon
+import ru.nk.econav.util.LatLon
 import ru.nk.econav.routes.RouteResponse
 import ru.nk.econav.util.UnitsUtils
-import util.Upshot
-import util.asError
-import util.asOk
 import util.fold
-import java.util.*
 
 class RouteService(
     private val routingManager: RoutingManager

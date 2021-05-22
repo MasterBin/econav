@@ -3,8 +3,7 @@ package ru.nk.econav.repository.impl
 import com.mapbox.api.geocoding.v5.MapboxGeocoding
 import com.mapbox.api.geocoding.v5.models.CarmenFeature
 import com.mapbox.geojson.Point
-import ru.nk.econav.database.DatabaseFactory
-import ru.nk.econav.model.LatLon
+import ru.nk.econav.util.LatLon
 import ru.nk.econav.repository.GeocodingRepository
 import util.Upshot
 import util.asError

@@ -3,8 +3,8 @@ package ru.nk.econav.routes
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import ru.nk.econav.model.LatLon
-import ru.nk.econav.serivice.GeocodingService
+import ru.nk.econav.util.LatLon
+import ru.nk.econav.service.GeocodingService
 
 
 fun Route.geocoding(service: GeocodingService) {

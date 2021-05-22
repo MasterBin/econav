@@ -9,9 +9,9 @@ import ru.nk.econav.repository.EcoPlacesRepository
 import ru.nk.econav.repository.GeocodingRepository
 import ru.nk.econav.repository.impl.EcoPlacesRepositoryImpl
 import ru.nk.econav.repository.impl.GeocodingRepositoryImpl
-import ru.nk.econav.serivice.GeocodingService
-import ru.nk.econav.serivice.RouteService
-import ru.nk.econav.serivice.RoutingManager
+import ru.nk.econav.service.GeocodingService
+import ru.nk.econav.service.RouteService
+import ru.nk.econav.service.RoutingManager
 
 
 fun appModule(application : Application) = module {

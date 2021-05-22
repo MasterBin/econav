@@ -1,10 +1,10 @@
-package ru.nk.econav.serivice
+package ru.nk.econav.service
 
 import com.vividsolutions.jts.geom.Coordinate
 import kotlinx.serialization.Serializable
 import org.geotools.geometry.jts.JTS
 import org.geotools.referencing.CRS
-import ru.nk.econav.model.LatLon
+import ru.nk.econav.util.LatLon
 import ru.nk.econav.repository.GeocodingRepository
 import ru.nk.econav.util.UnitsUtils
 import util.getOr
@@ -18,7 +18,7 @@ class GeocodingService(
 
     private val crs = CRS.parseWKT(EPSG4326)
 
-    fun search(query : String, autocomplete : Boolean, userLocation : LatLon?) : GeoResponse{
+    fun search(query : String, autocomplete : Boolean, userLocation : LatLon?) : GeoResponse {
 
         val res = repository.search(query, autocomplete, userLocation)
 

@@ -1,4 +1,4 @@
-package ru.nk.econav.model
+package ru.nk.econav.util
 
 import kotlinx.serialization.Serializable
 

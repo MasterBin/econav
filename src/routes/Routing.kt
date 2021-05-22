@@ -4,9 +4,8 @@ import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.Serializable
-import ru.nk.econav.model.LatLon
-import ru.nk.econav.serivice.RouteService
-import util.getOrNull
+import ru.nk.econav.util.LatLon
+import ru.nk.econav.service.RouteService
 
 
 fun Route.routingEngine(routeService: RouteService) {

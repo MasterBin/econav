@@ -1,4 +1,4 @@
-package ru.nk.econav.serivice
+package ru.nk.econav.service
 
 import com.graphhopper.GHRequest
 import com.graphhopper.GraphHopper
@@ -6,7 +6,7 @@ import com.graphhopper.ResponsePath
 import com.graphhopper.util.Parameters
 import graphhopper.GraphHopperFactory
 import graphhopper.MyGraphHopper
-import ru.nk.econav.model.LatLon
+import ru.nk.econav.util.LatLon
 import ru.nk.econav.repository.EcoPlacesRepository
 import util.Upshot
 import util.asError
